@@ -11,15 +11,29 @@ const PORT = 8080
 app.use(express.json())
 
 app.get('/students/', (req, res) => {
-    console.log(`-------------------went here instead`)
-    db.query('SELECT *  FROM students', (err, results) => {
+    if(req.query.search == undefined)
+    {
+        db.query('SELECT *  FROM students', (err, results) => {
 
-        if(err){
-            res.status(500).end()
-        } else {
-            res.status(200).json(results.rows)
-        }
-    })
+            if(err){
+                res.status(500).end()
+            } else {
+                res.status(200).json(results.rows)
+            }
+        })
+    }
+    else{
+        const search = req.query.search;
+        db.query(`SELECT *  FROM students WHERE firstname like '${search}' OR lastname like '${search}'`, (err, results) => {
+
+            if(err){
+                res.status(500).end()
+            } else {
+                res.status(200).json(results.rows)
+            }
+        })
+
+    }
   })
 
 
