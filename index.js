@@ -24,7 +24,7 @@ app.get('/students/', (req, res) => {
     }
     else{
         const search = req.query.search;
-        db.query(`SELECT *  FROM students WHERE firstname like '${search}' OR lastname like '${search}'`, (err, results) => {
+        db.query(`SELECT *  FROM students WHERE firstname like '${search}' OR lastname '${search}'`, (err, results) => {
 
             if(err){
                 res.status(500).end()
@@ -83,10 +83,10 @@ app.post('/grades/', (req, res) => {
      db.query(`INSERT INTO grades (student_id, grade)  Values(${studentId}, ${grade})`, (err, results) => { //${studentid}
    
            if(err){
-               res.status(500).end()
+               res.status(500).send()
    
            } else {
-               res.status(200)
+               res.status(200).send()
            }
        })
    })
